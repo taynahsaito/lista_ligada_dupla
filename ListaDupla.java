@@ -33,12 +33,12 @@ public class ListaDupla {
 
     public int removeInicio(){
         int info = primeiro.getInfo();
-        primeiro = primeiro.getProximo();//vai na caixinha do primeiro e pega o valor do proximoo
-        if (primeiro == ultimo){ //tinha um unico elemento
+        primeiro = primeiro.getProximo();//vai na caixinha do primeiro e pega o valor do proximo - agora a variavel primeiro referencia o segundo elemento da lista
+        if (primeiro == ultimo){ //tinha um unico elemento  como tem só int, para nao devolvermos -1, deixamos a responsabilidade de testar se a lista está vazia para a aplicação
             ultimo = null; //esvaziou a lista
         }
         else{
-            primeiro.setAnterior(null);
+            primeiro.setAnterior(null); // apagamos o endereço do antigo primeiro da caixinha do segundo (o novo primeiro), cortando as amarras daquele primeiro elemento com a lista.
         }
         return info;
     }
@@ -73,7 +73,7 @@ public class ListaDupla {
         return s;
     }
 
-    public void insereElementoPosicao(int info,int pos){
+    public void insereElementoPosicao(int info,int pos){ //vantagem de chamar outros métodos dentro do método: menos código, mais legibilidade de codigo. desvantagens = nao podemos criar o no antes de chamar o metodo
         if (estaVazia() || pos == 1){
             insereInicio(info);
         }
@@ -88,7 +88,11 @@ public class ListaDupla {
                 insereFim(info);
             }
             else{
-                //arrumar os 4 ponteiros - caso esteja numa pos 3 aleatoria
+                NoDuplo novo = new NoDuplo(info);
+                novo.setProximo(aux);
+                novo.setAnterior(aux.getAnterior());
+                novo.getProximo().setAnterior(novo);
+                novo.getAnterior().setProximo(novo);
             }
         }
     }
@@ -96,3 +100,7 @@ public class ListaDupla {
 
 
 //tudo que acontece dinamicamente é em forma de execução
+//dumb knot - inicializar a lista com um nó vazio, que é apontado pelo primeiro e pelo último, e isso que caracteriza a lista como vazia
+//podem existir diferentes implementações para a mesma especificação
+//tokens são palavras computacionais
+// as linked lists do java são feitas a partir da estrutura deque - que também é usada na própria parte livre da memória
